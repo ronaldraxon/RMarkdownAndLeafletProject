@@ -1,6 +1,6 @@
 ---
 title: "Interactive Map"
-author: "Ronald RodrÃ­guez - ronaldraxon@gmail.com"
+author: "Ronald Rodríguez - ronaldraxon@gmail.com"
 date: "21 de septiembre de 2017"
 output: html_document
 ---
@@ -11,6 +11,8 @@ library(leaflet)
 ```
 
 ## R Markdown
+
+Thanks to http://www.gadm.org/country
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
