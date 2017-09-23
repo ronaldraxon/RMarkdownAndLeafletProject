@@ -1,0 +1,10 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/310898/46141cdb26094368bc9c16dc2e4a9c83
+bundleId: https://api.rpubs.com/api/v1/document/310898/46141cdb26094368bc9c16dc2e4a9c83
+url: http://rpubs.com/ronaldraxon/310898
+when: 1506143052.8273

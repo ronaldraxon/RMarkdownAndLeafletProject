@@ -1,52 +1,50 @@
 ---
 title: "Interactive Map"
 author: "Ronald Rodríguez - ronaldraxon@gmail.com"
-date: "21 de septiembre de 2017"
+date: "22 de septiembre de 2017"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, echo= FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(leaflet)
 library(sp)
 ```
 
-## R Markdown
 
-RDS files can be downloaded from the URL http://www.gadm.org/country. Keep in mi
-
-http://www.dane.gov.co/index.php/estadisticas-por-tema/demografia-y-poblacion/censo-general-2005-1
-
-http://www.dane.gov.co/files/censos/libroCenso2005nacional.pdf
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars, echo=FALSE}
-colombiaSDF <- readRDS("COL_adm2.rds")
-
-
-metro <- colombiaSDF[colombiaSDF$NAME_1 == "Cundinamarca", ]
-  
-
-my_map <- leaflet(metro) %>% 
+```{r cars, echo=TRUE}
+colombiaSDF <- readRDS("COL_adm1.rds")
+census <- read.table(header=TRUE,file="CensoColombia2005.csv",sep =";",
+                    colClasses=c("character", "integer", "integer", "integer"),
+                    encoding = "UTF-8")
+colombianDemo <- colombiaSDF[colombiaSDF$NAME_1 == census$Departamento, ]
+colombianDemo$CCN_1 <- census$Total
+colombianDemo$CCA_1 <- census$Hombres
+colombianDemo$NL_NAME_1 <- census$Mujeres
+pal <- colorNumeric('Reds', NULL)
+my_map <- leaflet(colombianDemo) %>% 
      addTiles() %>%
      clearShapes() %>%
-     addPolygons(stroke = FALSE, smoothFactor = 0, 
-                  fillColor = "RED", fillOpacity = 0.7, 
-                  layerId = ~NAME_2)
+     addPolygons(color = "#444444",weight = 1, smoothFactor = 0.5, 
+                  fillColor = ~pal(CCN_1), fillOpacity = 0.7, 
+                  layerId = ~NAME_1,
+                  highlightOptions = highlightOptions(color = "white", weight = 2,
+                  bringToFront = TRUE),
+                  label = paste(colombianDemo$NAME_1,"-",
+                  "Men: ",colombianDemo$CCA_1,
+                  "Women: ",colombianDemo$NL_NAME_1)) %>%
+     addLegend(position = 'bottomright', pal = pal, 
+                values = colombianDemo$CCN_1, title = 'Population 2005')
 my_map
-    
-
-
-      addProviderTiles('CartoDB.Positron') %>%
-      clearShapes() %>%
-      addPolygons(stroke = FALSE, smoothFactor = 0, 
-                  fillColor = ~pal(entropy), fillOpacity = 0.7, 
-                  layerId = ~GEOID) %>%
-      addLegend(position = 'bottomright', pal = pal, 
-                values = metro()$entropy, title = 'Score')
 ```
+
+## Important Notes
+
+RDS files can be downloaded from the URL http://www.gadm.org/country. Keep in mind,
+that those files are  freely available only for academic use. Also the census dataset
+can be found in the following URL: http://www.dane.gov.co/index.php/estadisticas-por-tema/demografia-y-poblacion/censo-general-2005-1.
+
+The repository with the files can be found in the following URL:
+https://github.com/ronaldraxon/RMarkdownAndLeafletProject
 
 
